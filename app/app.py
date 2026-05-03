@@ -22,5 +22,6 @@ def health_check():
 if __name__ == "__main__":
     # We use 0.0.0.0 so it's accessible outside the Docker container
     app.run(host="0.0.0.0", port=5000)
+    
 
 # <--- MAKE SURE THERE IS ONE EMPTY LINE HERE AT THE VERY END
