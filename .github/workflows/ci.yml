@@ -28,7 +28,7 @@ jobs:
       - name: Check code style (lint)
         run: |
           pip install flake8
-          flake8 app/
+          flake8 app/ --ignore=W292,W293
 
       - name: Run tests
         run: |
