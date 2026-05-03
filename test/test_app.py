@@ -1,26 +1,19 @@
 import pytest
-from app.main import app
+from app.app import app
 
 @pytest.fixture
 def client():
-    # Sets up a virtual browser to test the app without running it
     with app.test_client() as client:
         yield client
 
-def test_home_page(client):
-    """Test that the home page returns a 200 status code."""
+def test_home(client):
+    """Test the home route returns success status."""
     response = client.get('/')
     assert response.status_code == 200
-    assert b"automated pipeline" in response.data
+    assert response.get_json()['status'] == 'success'
 
-def test_health_check(client):
-    """Test the health check endpoint."""
+def test_health(client):
+    """Test the health check route."""
     response = client.get('/health')
     assert response.status_code == 200
-    assert response.json['status'] == "healthy"
-
-# FOR YOUR TASK 1 EXERCISE:
-# To intentionally break the test for your recording, 
-# uncomment the line below or change 200 to 500.
-# def test_intentional_failure():
-#     assert 1 == 2
+    assert response.get_json()['status'] == 'healthy'

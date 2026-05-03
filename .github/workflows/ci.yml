@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  # ── JOB 1: Check code quality ──────────────────
+  # ── JOB 1: Check code quality & Run Tests ──────
   check-code:
     name: Lint and Test
     runs-on: ubuntu-latest
@@ -24,15 +24,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install flake8 pytest
 
       - name: Check code style (lint)
         run: |
-          pip install flake8
+          # Ignore minor formatting issues that blocked previous runs
           flake8 app/ --ignore=W292,W293
 
       - name: Run tests
         run: |
-          pip install pytest
+          # Export the current directory to PYTHONPATH so pytest finds 'app'
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest test/
 
   # ── JOB 2: Build and Push Docker image ──────────
